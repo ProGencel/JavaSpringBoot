@@ -69,4 +69,31 @@ public class GlobalException {
         return ResponseEntity.badRequest().body(error);
     }
 
+    public enum ID_POS
+    {
+        FIRST,
+        LAST
+    }
+
+    public static ResponseEntity handleInvalidId(ID_POS idPos, long id)
+    {
+
+        String message = "";
+
+        if(idPos.equals(ID_POS.FIRST))
+        {
+            message = "The small value entered could not be found: " + id;
+        }
+        else if(idPos.equals(ID_POS.LAST))
+        {
+            message = "The great value entered could not be found: " + id;
+        }
+
+        Map<String, Object> hm = new HashMap<>();
+        hm.put("Success", false);
+        hm.put("Message", message);
+        return ResponseEntity.badRequest().body(hm);
+
+    }
+
 }

@@ -28,7 +28,7 @@ public class Customer {
     private boolean enabled;
 
     @Column(length = 1000)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
 }
