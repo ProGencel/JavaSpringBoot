@@ -5,6 +5,7 @@ import com.works.dto.CustomerRegisterRequestDto;
 import com.works.dto.CustomerResponseDto;
 import com.works.entity.Customer;
 import com.works.repository.CustomerRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.modelmapper.ModelMapper;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class CustomerService {
 
     final CustomerRepository customerRepository;
+    final HttpServletRequest request;
     ModelMapper modelMapper = new ModelMapper();
 
     public ResponseEntity register(CustomerRegisterRequestDto customerRegisterRequestDto){
@@ -45,6 +47,7 @@ public class CustomerService {
             if(isMatch)
             {
                 CustomerResponseDto customerResponseDto = modelMapper.map(customer, CustomerResponseDto.class);
+                request.getSession().setAttribute("customer",customerResponseDto);
                 return ResponseEntity.ok().body(customerResponseDto);
             }
         }
