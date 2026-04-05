@@ -2,17 +2,19 @@ package com.works.controller;
 
 
 import com.works.dto.ProductSaveRequestDto;
+import com.works.dto.ProductUpdateRequestDto;
 import com.works.entity.Product;
 import com.works.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("product")
@@ -30,6 +32,32 @@ public class ProductRestController {
     public List<Product> saveAll(@Valid @RequestBody List<ProductSaveRequestDto> productSaveRequestDtoList)
     {
         return productService.saveAll(productSaveRequestDtoList);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity deleteOne(@PathVariable Long id)
+    {
+        return productService.deleteOne(id);
+    }
+
+    @PutMapping("update")
+    public ResponseEntity update(@Valid @RequestBody ProductUpdateRequestDto productUpdateRequestDto)
+    {
+        return productService.update(productUpdateRequestDto);
+    }
+
+    @GetMapping("list")
+    public Page<Product> listProducts(@RequestParam (defaultValue = "0") int page)
+    {
+        return productService.productList(page);
+    }
+
+    @GetMapping("search")
+    public Page<Product> search(@RequestParam String q,
+                                @RequestParam (defaultValue = "0") int page,
+                                @RequestParam String price)
+    {
+        return productService.search(q,page,price);
     }
 
 }
